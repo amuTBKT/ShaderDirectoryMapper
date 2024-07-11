@@ -42,10 +42,10 @@ public:
 
 public:
 	// If initiailized, only the specified plugins will be registered.
-	UPROPERTY(config, EditAnywhere, Category = "Shader")
-	TSet<FString> PluginsToRegister;
+	UPROPERTY(config, EditAnywhere, Category = "Plugin")
+	TSet<FString> AllowedPlugins;
 
 	// Plugins to never register.
-	UPROPERTY(config, EditAnywhere, Category = "Shader")
-	TSet<FString> PluginsToNeverRegister;
+	UPROPERTY(config, EditAnywhere, Category = "Plugin")
+	TSet<FString> DisallowedPlugins;
 };

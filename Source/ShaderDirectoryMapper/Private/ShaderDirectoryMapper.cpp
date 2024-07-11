@@ -25,10 +25,10 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 			{
 				const FName KeyName = FName(It.Key().GetPlainNameString());
 
-				if (KeyName == GET_MEMBER_NAME_CHECKED(UShaderDirectoryMapperSettings, PluginsToRegister) ||
-					KeyName == GET_MEMBER_NAME_CHECKED(UShaderDirectoryMapperSettings, PluginsToNeverRegister))
+				if (KeyName == GET_MEMBER_NAME_CHECKED(UShaderDirectoryMapperSettings, AllowedPlugins) ||
+					KeyName == GET_MEMBER_NAME_CHECKED(UShaderDirectoryMapperSettings, DisallowedPlugins))
 				{
-					TSet<FString>& DstSet = (KeyName == GET_MEMBER_NAME_CHECKED(UShaderDirectoryMapperSettings, PluginsToRegister)) ?
+					TSet<FString>& DstSet = (KeyName == GET_MEMBER_NAME_CHECKED(UShaderDirectoryMapperSettings, AllowedPlugins)) ?
 											PluginsToRegister : PluginsToNeverRegister;
 					
 					FString ValueString = It.Value().GetValue();
@@ -87,7 +87,7 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 			return;
 		}
 
-		const FConfigSection* Section = GConfig->GetSection(TEXT("/Script/ShaderDirectoryMapper.ShaderDirectoryMapperettings"), false, *GEngineIni);
+		const FConfigSection* Section = GConfig->GetSection(TEXT("/Script/ShaderDirectoryMapper.ShaderDirectoryMapperSettings"), false, *GEngineIni);
 		const FShaderDirectoryMapperModule::FSettings Settings{ Section };
 
 		TArray<FString> ExistingShaderDirectories;
@@ -146,7 +146,7 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 			if (!IsPluginDirectoryAlreadyRegistered(PluginBaseDirectory))
 			{
 				const FString PluginShaderDirectory = FPaths::Combine(PluginBaseDirectory, TEXT("Shaders"));
-				const FString VirtualPath = FString::Printf(TEXT("/%s"), *PluginName);
+				const FString VirtualPath = FString::Printf(TEXT("/Plugin/%s"), *PluginName);
 				TryAddingShaderDirectoryMapping(VirtualPath, PluginShaderDirectory);
 			}
 		}
@@ -157,7 +157,7 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 		{
 			const FString ProjectName = FString(FApp::GetProjectName());
 			const FString ProjectShaderDirectory = FPaths::Combine(ProjectBaseDirectory, TEXT("Shaders"));
-			const FString VirtualPath = FString::Printf(TEXT("/%s"), *ProjectName);
+			const FString VirtualPath = FString(TEXT("/Game"));
 			TryAddingShaderDirectoryMapping(VirtualPath, ProjectShaderDirectory);
 		}
 	}

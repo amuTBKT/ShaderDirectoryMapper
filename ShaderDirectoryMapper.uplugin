@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "ShaderDirectoryMapper",
-	"Description": "Plugin for registering shader directories",
+	"Description": "Auto register plugin and project shader directories.",
 	"Category": "Rendering",
 	"CreatedBy": "Amit Mehar",
 	"CreatedByURL": "https://twitter.com/amu_mhr",
@@ -18,7 +18,8 @@
 		{
 			"Name": "ShaderDirectoryMapper",
 			"Type": "Runtime",
-			"LoadingPhase": "PostConfigInit"
+			"LoadingPhase": "PostConfigInit",
+			"WhitelistPlatforms": [ "Win64", "Linux", "Mac", "IOS", "Android" ]
 		}
 	],
 	"Plugins": [
