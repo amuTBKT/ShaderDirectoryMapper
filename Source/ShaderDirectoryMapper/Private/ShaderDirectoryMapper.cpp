@@ -11,7 +11,7 @@
 
 class FShaderDirectoryMapperModule : public IModuleInterface
 {
-	// workaround to read data from config file as UObjects are not initialized during PostConfigInit
+	// workaround for reading DeveloperSettings from config file as UObjects are not initialized during PostConfigInit
 	struct FSettings
 	{
 		FSettings(const FConfigSection* Section)

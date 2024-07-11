@@ -41,7 +41,7 @@ public:
 #endif
 
 public:
-	// If initiailized, only the specified plugins will be registered.
+	// If initiailized, only plugins specified in this list will be registered.
 	UPROPERTY(config, EditAnywhere, Category = "Plugin")
 	TSet<FString> AllowedPlugins;
 
