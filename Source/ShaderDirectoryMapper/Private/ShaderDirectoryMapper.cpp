@@ -101,7 +101,7 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 			}
 		}
 
-		// returns false if any subdirectory of "BaseDirectory" is registered (assumes plugins only register one directory)
+		// returns true if any subdirectory of "BaseDirectory" is registered (assumes plugins only register one directory)
 		auto IsPluginDirectoryAlreadyRegistered = [&](const FString& PluginBaseDirectory) -> bool
 		{
 			const bool bAlreadyAdded = ExistingShaderDirectories.ContainsByPredicate(
@@ -112,7 +112,7 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 			return bAlreadyAdded;
 		};
 
-		// returns false only if it encounters exact path (otherwise returns false positives for ProjDir/Plugin/Shaders)
+		// returns true only if it encounters exact path (otherwise can return false positives for ProjDir/Plugin/Shaders)
 		auto IsProjectDirectoryAlreadyRegistered = [&](const FString& ProjectBaseDirectory) -> bool
 		{
 			const bool bAlreadyAdded = ExistingShaderDirectories.ContainsByPredicate(
