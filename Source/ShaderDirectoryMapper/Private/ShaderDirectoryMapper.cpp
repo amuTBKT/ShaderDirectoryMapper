@@ -2,7 +2,6 @@
 
 #include "ShaderDirectoryMapper.h"
 
-#include "Misc/App.h"
 #include "Misc/Paths.h"
 #include "ShaderCore.h"
 #include "Modules/ModuleManager.h"
@@ -126,10 +125,17 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 		auto TryAddingShaderDirectoryMapping = [](const FString& VirtualShaderDirectory, const FString& RealShaderDirectory)
 		{
 			if (IPlatformFile::GetPlatformPhysical().DirectoryExists(*RealShaderDirectory))
-			{				
+			{
 				AddShaderSourceDirectoryMapping(VirtualShaderDirectory, RealShaderDirectory);
-
 				UE_LOG(LogTemp, Log, TEXT("[ShaderDirectoryMapper] Adding \"%s\" shader directory as \"%s\""), *RealShaderDirectory, *VirtualShaderDirectory);
+
+				const FString SharedSourceDirectory = FString::Printf(TEXT("%s/Shared"), *RealShaderDirectory);
+				if (IPlatformFile::GetPlatformPhysical().DirectoryExists(*SharedSourceDirectory))
+				{
+					const FString SharedSourceVirtualDirectory = FString::Printf(TEXT("%s/Shared/"), *VirtualShaderDirectory);
+					AddShaderSourceSharedVirtualDirectory(SharedSourceVirtualDirectory);
+					UE_LOG(LogTemp, Log, TEXT("[ShaderDirectoryMapper] Adding \"%s\" shared source directory as \"%s\""), *SharedSourceDirectory, *SharedSourceVirtualDirectory);
+				}
 			}
 		};
 
@@ -155,7 +161,6 @@ class FShaderDirectoryMapperModule : public IModuleInterface
 		const FString ProjectBaseDirectory = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
 		if (!IsProjectDirectoryAlreadyRegistered(ProjectBaseDirectory))
 		{
-			const FString ProjectName = FString(FApp::GetProjectName());
 			const FString ProjectShaderDirectory = FPaths::Combine(ProjectBaseDirectory, TEXT("Shaders"));
 			const FString VirtualPath = FString(TEXT("/Game"));
 			TryAddingShaderDirectoryMapping(VirtualPath, ProjectShaderDirectory);
