@@ -7,7 +7,7 @@ public class ShaderDirectoryMapper : ModuleRules
 {
 	public ShaderDirectoryMapper(ReadOnlyTargetRules Target) : base(Target)
 	{
-		//PCHUsage = PCHUsageMode.NoPCHs;
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
